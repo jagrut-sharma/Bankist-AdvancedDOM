@@ -38,6 +38,46 @@ document.addEventListener('keydown', function (e) {
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 
+// SMOOTH SCROLLING
+
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const sectionOne = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', function (e) {
+  console.log(e.target.getBoundingClientRect());
+  const sectionOneCoords = sectionOne.getBoundingClientRect();
+  console.log(sectionOneCoords);
+
+  console.log('Current Scroll X/Y:', window.pageXOffset, window.scrollY); // gives current scroll poisition
+  // window.pageXOffset = window.scrollX and window.pageYOffset = window.scrollY
+
+  // To get current width and height of viewport
+  console.log(
+    'Current width/height of viewport:',
+    document.documentElement.clientWidth,
+    document.documentElement.clientHeight
+  );
+
+  // window.scrollTo(sectionOneCoords.left, sectionOneCoords.top);
+  // It will not scroll correctly now, as it gives the distance in teh current viewport and not overall from top of the page => To solve this, we add scrolled + top distance in current viewport to obtain correct distance that scroll needs to happen
+
+  // window.scrollTo(
+  //   sectionOneCoords.left + window.pageXOffset,
+  //   sectionOneCoords.top + window.pageYOffset
+  // );
+
+  // Can also pass an object
+  // window.scrollTo({
+  //   left: sectionOneCoords.left + window.scrollX,
+  //   top: sectionOneCoords.top + window.scrollY,
+  //   behavior: 'smooth',
+  // });
+
+  // All lines can be condensed into one line, this is supported by modern browsers only:
+  sectionOne.scrollIntoView({ behavior: 'smooth' }); // Works only in modern browsers
+});
+
+/*
 // SELECTING, CREATING AND DELETING ELEMENTS:
 
 // SELECTING
@@ -118,4 +158,4 @@ console.log(logo.getAttribute('src')); // gives relative link => img/logo.png
 // Data Attributes:
 console.log(logo.dataset.versionNumber); // data- attributes will be obtained in dataset object
 
-// You can also use classList.add, remove, toggle to add/remove class. Can use contains to check.
+// You can also use classList.add, remove, toggle to add/remove class. Can use contains to check.*/
