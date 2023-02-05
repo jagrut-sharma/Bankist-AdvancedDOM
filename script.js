@@ -7,6 +7,8 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const sectionOne = document.querySelector('#section--1');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -33,15 +35,7 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-/////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
-
 // SMOOTH SCROLLING
-
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const sectionOne = document.querySelector('#section--1');
 
 btnScrollTo.addEventListener('click', function (e) {
   console.log(e.target.getBoundingClientRect());
@@ -76,6 +70,33 @@ btnScrollTo.addEventListener('click', function (e) {
   // All lines can be condensed into one line, this is supported by modern browsers only:
   sectionOne.scrollIntoView({ behavior: 'smooth' }); // Works only in modern browsers
 });
+
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+
+// Event Listeners:
+
+const h1 = document.querySelector('h1');
+
+const alertH1 = function () {
+  alert('You are reading the heading!');
+  h1.removeEventListener('mouseover', alertH1); // callback function that is to be removed, need to be named
+};
+h1.addEventListener('mouseover', alertH1);
+
+h1.addEventListener(
+  'mouseenter',
+  function () {
+    alert('This will happen once');
+  },
+  { once: true }
+);
+
+// h1.onmouseenter = function () {
+//   alert('On event: You are again reading the heading.');
+// };
 
 /*
 // SELECTING, CREATING AND DELETING ELEMENTS:
