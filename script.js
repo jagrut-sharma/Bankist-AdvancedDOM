@@ -95,7 +95,59 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 
-// Event Delegation:
+// DOM Traversing:
+
+/*
+We are training with following element:
+
+<div class="header__title">
+    <!-- <h1 onclick="alert('HTML alert!')"> -->
+      <h1>
+        When
+        <!-- Green highlight effect -->
+        <span class="highlight">banking</span>
+        meets<br />
+        <span class="highlight">minimalist</span>
+      </h1>
+      <h4>A simpler banking experience for a simpler life.</h4>
+      <button class="btn--text btn--scroll-to">Learn more &DownArrow;</button>
+      <img
+        src="img/hero.png"
+        class="header__img"
+        alt="Minimalist bank items"
+      />
+</div>
+*/
+
+const h1 = document.querySelector('h1');
+
+// Going downwards: child
+console.log(h1.querySelectorAll('.highlight')); // NodeList(2) [span.highlight, span.highlight]
+console.log(h1.childNodes); // NodeList(9) [text, comment, text, span.highlight, text, br, text, span.highlight, text]
+console.log(h1.children); // HTMLCollection(3) [span.highlight, br, span.highlight]
+
+h1.firstElementChild.style.color = 'white'; // will change color of first child element inside h1
+h1.lastElementChild.style.color = 'orangered'; // will change color of last child element inside h1
+
+// Going Upwards: parent
+console.log(h1.parentNode); // <div class="header__title">...</div> --> gives nodes but in this case is similar to parent element
+console.log(h1.parentElement); // <div class="header__title">...</div>
+console.log(h1.closest('.header')); // gives header element which is not direct parent
+h1.closest('.header').style.background = 'var(--gradient-secondary)';
+h1.closest('h1').style.background = 'var(--gradient-primary)'; // --> Selcts h1 itself
+
+// Going sideways: siblings
+console.log(h1.nextElementSibling); // will give the next element
+console.log(h1.previousElementSibling); // will give the previous element
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+console.log(h1.parentElement.children); // now have access to all siblings --> children give HTML collection
+
+[...h1.parentElement.children].forEach(function (ele) {
+  if (ele !== h1) ele.style.transform = 'scale(0.5)';
+});
 
 /*
 // Event Bubbling and Capturing:
