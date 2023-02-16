@@ -90,6 +90,34 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
+// Tabbed Components:
+
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+// tabs.forEach(t => t.addEventListener('click', () => console.log('clicked')));
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
+
+  // Guard clause
+  if (!clicked) return;
+  // or we can use nullish coalescent => but we won't because we need atleast one active tab and also further operations will stop
+  // clicked?.classList.add('operations__tab--active');
+
+  // activate tabs
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+
+  // Activate content Area:
+  tabsContent.forEach(content =>
+    content.classList.remove('operations__content--active')
+  );
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
@@ -118,6 +146,8 @@ We are training with following element:
       />
 </div>
 */
+
+/*
 
 const h1 = document.querySelector('h1');
 
