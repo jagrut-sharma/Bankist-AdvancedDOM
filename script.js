@@ -10,6 +10,7 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const sectionOne = document.querySelector('#section--1');
 
+// MODAL Window
 const openModal = function (e) {
   e.preventDefault();
   modal.classList.remove('hidden');
@@ -69,6 +70,24 @@ btnScrollTo.addEventListener('click', function (e) {
 
   // All lines can be condensed into one line, this is supported by modern browsers only:
   sectionOne.scrollIntoView({ behavior: 'smooth' }); // Works only in modern browsers
+});
+
+// PAGE NAVIGATION
+// document.querySelectorAll('.nav__link').forEach(function (ele) { // forEach was used because querySelectorAll gives nodeList and we need to attach event handlers to each link
+//   ele.addEventListener('click', function (e) {
+//     e.preventDefault();
+//     // console.log('LINK');
+//     const id = e.target.getAttribute('href');
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
 });
 
 /////////////////////////////////////////////////////////////////////////
