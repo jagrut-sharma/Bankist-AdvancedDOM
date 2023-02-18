@@ -9,6 +9,10 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const sectionOne = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
 
 // MODAL Window
 const openModal = function (e) {
@@ -92,10 +96,6 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 
 // Tabbed Components:
 
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
-
 // tabs.forEach(t => t.addEventListener('click', () => console.log('clicked')));
 tabsContainer.addEventListener('click', function (e) {
   const clicked = e.target.closest('.operations__tab');
@@ -117,6 +117,29 @@ tabsContainer.addEventListener('click', function (e) {
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+// Menu Fade Animation - navbar
+
+const handleHover = function (e) {
+  const linkNav = e.target;
+  if (linkNav.classList.contains('nav__link')) {
+    const siblings = linkNav.closest('.nav').querySelectorAll('.nav__link');
+    const logo = linkNav.closest('.nav').querySelector('img');
+    // console.log(logo);
+    siblings.forEach(ele => {
+      if (ele !== linkNav) ele.style.opacity = this;
+    });
+    logo.style.opacity = this;
+  }
+};
+
+// nav.addEventListener('mouseover', e => handleHover(e, 0.5));
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+
+// ? bind returns a function with fixed value of "this" => therefore the new function received from bind will be now called everytime and therefore will have access to 'event' enabling us to use e.target etc.
+
+// nav.addEventListener('mouseout', e => handleHover(e, 1));
+nav.addEventListener('mouseout', handleHover.bind(1));
 
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
