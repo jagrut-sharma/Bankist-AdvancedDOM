@@ -13,6 +13,7 @@ const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
+const header = document.querySelector('.header');
 
 // MODAL Window
 const openModal = function (e) {
@@ -140,6 +141,51 @@ nav.addEventListener('mouseover', handleHover.bind(0.5));
 
 // nav.addEventListener('mouseout', e => handleHover(e, 1));
 nav.addEventListener('mouseout', handleHover.bind(1));
+
+// Sticky Navigation:
+
+/*
+// Not very efficient as scroll is attached to window and events keep firing => slowing down page
+window.addEventListener('scroll', function (e) {
+  const sectionOneCoords = sectionOne.getBoundingClientRect();
+  // console.log(sectionOneCoords);
+  // console.log(window.scrollY);
+  if (window.scrollY > sectionOneCoords.top) {
+    nav.classList.add('sticky');
+  } else nav.classList.remove('sticky');
+});
+*/
+
+// Sticky Navigation: Intersection Observer API
+
+// const obsCallback = function (entries, observer) {
+//   // The observer we have defined below is also passed and can be used if needed
+//   entries.forEach(entry => console.log(entry));
+// };
+// const obsOptions = {
+//   root: null,
+//   threshold: 0.1, // can also declare multiple values [0, 0.2] --> One threshold will give one element in entries array whereas in multiple threshold, entries array will consider muliple elements equal to number of threshold values defined
+// };
+
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+
+// observer.observe(sectionOne);
+
+const navHeight = nav.getBoundingClientRect().height;
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  // console.log(entry);
+
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`, // added navHeight as in resposive sites it can be different in different devices so doesn't makes sense to use hardcoded value.
+});
+headerObserver.observe(header);
 
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
