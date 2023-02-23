@@ -187,6 +187,30 @@ const headerObserver = new IntersectionObserver(stickyNav, {
 });
 headerObserver.observe(header);
 
+// Revealing elements:
+
+const allSections = document.querySelectorAll('.section');
+
+const revealSection = function (entries, observer) {
+  // console.log(entries);
+  const [entry] = entries;
+  // console.log(entry);
+  if (!entry.isIntersecting) return;
+  // const signal = !entry.isIntersecting;
+  // console.log(signal);
+  // entry.target.classList.toggle('section--hidden', signal); ==> For it to dissapear again once scrolled, also we need to remove unobserved
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+allSections.forEach(section => {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
