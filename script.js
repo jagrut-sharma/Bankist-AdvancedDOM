@@ -14,6 +14,12 @@ const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
 const header = document.querySelector('.header');
+const slider = document.querySelector('.slider');
+const slides = document.querySelectorAll('.slide');
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
+const imgTargets = document.querySelectorAll('img[data-src]');
+const allSections = document.querySelectorAll('.section');
 
 // MODAL Window
 const openModal = function (e) {
@@ -189,8 +195,6 @@ headerObserver.observe(header);
 
 // Revealing elements:
 
-const allSections = document.querySelectorAll('.section');
-
 const revealSection = function (entries, observer) {
   const [entry] = entries;
   if (!entry.isIntersecting) return;
@@ -207,17 +211,16 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 
 allSections.forEach(section => {
   sectionObserver.observe(section);
-  section.classList.add('section--hidden');
+  // section.classList.add('section--hidden');
 });
 
 // LAZY LOADING:
 
-const imgTargets = document.querySelectorAll('img[data-src');
-
 const loadImg = function (entries, observer) {
   const [entry] = entries;
-  console.log(entry);
-  // guard clause
+  // console.log(entry);
+
+  // GUARD CLAUSE:
   if (!entry.isIntersecting) return;
   entry.target.src = entry.target.dataset.src;
 
@@ -234,6 +237,39 @@ const imgObserver = new IntersectionObserver(loadImg, {
 });
 
 imgTargets.forEach(img => imgObserver.observe(img));
+
+// SLIDER:
+let currSlide = 0;
+const maxSlide = slides.length - 1;
+const minSlide = 0;
+
+slider.style.transform = `scale(0.4) translateX(-800px)`;
+slider.style.overflow = 'visible';
+
+const goToSlide = function (currentSlide) {
+  slides.forEach(
+    (slide, index) =>
+      (slide.style.transform = `translateX(${(index - currentSlide) * 100}%)`) // 0%, 100%, 200%, 300%
+  );
+};
+
+goToSlide(0);
+
+// Next slide
+const nextSlide = function () {
+  currSlide++;
+  if (currSlide > maxSlide) currSlide = minSlide;
+  goToSlide(currSlide);
+};
+
+const prevSlide = function () {
+  currSlide--;
+  if (currSlide < minSlide) currSlide = maxSlide;
+  goToSlide(currSlide);
+};
+
+btnRight.addEventListener('click', nextSlide);
+btnLeft.addEventListener('click', prevSlide);
 
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
