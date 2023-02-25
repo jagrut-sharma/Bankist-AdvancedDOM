@@ -329,6 +329,23 @@ slider();
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 
+/*
+// LIFECYCLE DOM Events:
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  console.log(`HTML Parsed and DOM Tree is built`, e); // check in fast and slow 3G
+});
+
+window.addEventListener('load', function (e) {
+  console.log(`Page Fully Loaded`, e);
+});
+
+window.addEventListener('beforeunload', function (e) {
+  e.preventDefault();
+  console.log(e);
+  e.returnValue = '';
+});
+
 // DOM Traversing:
 
 /*
