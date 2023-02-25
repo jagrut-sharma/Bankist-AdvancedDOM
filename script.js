@@ -14,10 +14,7 @@ const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
 const header = document.querySelector('.header');
-const slider = document.querySelector('.slider');
-const slides = document.querySelectorAll('.slide');
-const btnLeft = document.querySelector('.slider__btn--left');
-const btnRight = document.querySelector('.slider__btn--right');
+// const slider = document.querySelector('.slider');
 const imgTargets = document.querySelectorAll('img[data-src]');
 const allSections = document.querySelectorAll('.section');
 
@@ -211,7 +208,7 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 
 allSections.forEach(section => {
   sectionObserver.observe(section);
-  // section.classList.add('section--hidden');
+  section.classList.add('section--hidden');
 });
 
 // LAZY LOADING:
@@ -239,37 +236,93 @@ const imgObserver = new IntersectionObserver(loadImg, {
 imgTargets.forEach(img => imgObserver.observe(img));
 
 // SLIDER:
-let currSlide = 0;
-const maxSlide = slides.length - 1;
-const minSlide = 0;
 
-slider.style.transform = `scale(0.4) translateX(-800px)`;
-slider.style.overflow = 'visible';
+const slider = function () {
+  const slides = document.querySelectorAll('.slide');
+  const btnLeft = document.querySelector('.slider__btn--left');
+  const btnRight = document.querySelector('.slider__btn--right');
+  const dotContainer = document.querySelector('.dots');
 
-const goToSlide = function (currentSlide) {
-  slides.forEach(
-    (slide, index) =>
-      (slide.style.transform = `translateX(${(index - currentSlide) * 100}%)`) // 0%, 100%, 200%, 300%
-  );
+  let currSlide = 0;
+  const maxSlide = slides.length - 1;
+  const minSlide = 0;
+
+  // Functions:
+
+  // Adding activation to dots:
+  const activateDot = function (slide) {
+    document
+      .querySelectorAll('.dots__dot')
+      .forEach(dot => dot.classList.remove('dots__dot--active'));
+    document
+      .querySelector(`.dots__dot[data-slide="${slide}"]`)
+      .classList.add('dots__dot--active');
+  };
+
+  const goToSlide = function (currentSlide) {
+    slides.forEach(
+      (slide, index) =>
+        (slide.style.transform = `translateX(${(index - currentSlide) * 100}%)`) // 0%, 100%, 200%, 300%
+    );
+    currSlide = currentSlide; // to update the value when clicked on dots
+  };
+
+  // Next slide
+  const nextSlide = function () {
+    currSlide++;
+    if (currSlide > maxSlide) currSlide = minSlide;
+    goToSlide(currSlide);
+    activateDot(currSlide);
+  };
+
+  const prevSlide = function () {
+    currSlide--;
+    if (currSlide < minSlide) currSlide = maxSlide;
+    goToSlide(currSlide);
+    activateDot(currSlide);
+  };
+
+  // Creating dots in slider:
+
+  const createDots = () => {
+    slides.forEach(function (_, index) {
+      // used '_' as it is not about the slides but rather create as many buttons as there are slides.
+      dotContainer.insertAdjacentHTML(
+        'beforeend',
+        `<button class="dots__dot" data-slide="${index}"></button>`
+      );
+    });
+  };
+
+  // All functions call for initialising:
+
+  const init = function () {
+    goToSlide(0);
+    createDots();
+    activateDot(0);
+  };
+  init();
+
+  // Event Handlers
+
+  btnRight.addEventListener('click', nextSlide);
+  btnLeft.addEventListener('click', prevSlide);
+
+  // adding keypress events
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  dotContainer.addEventListener('click', function (e) {
+    if (e.target.classList.contains('dots__dot')) {
+      const { slide } = e.target.dataset;
+      goToSlide(slide);
+      activateDot(slide);
+    }
+  });
 };
-
-goToSlide(0);
-
-// Next slide
-const nextSlide = function () {
-  currSlide++;
-  if (currSlide > maxSlide) currSlide = minSlide;
-  goToSlide(currSlide);
-};
-
-const prevSlide = function () {
-  currSlide--;
-  if (currSlide < minSlide) currSlide = maxSlide;
-  goToSlide(currSlide);
-};
-
-btnRight.addEventListener('click', nextSlide);
-btnLeft.addEventListener('click', prevSlide);
+slider();
 
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
